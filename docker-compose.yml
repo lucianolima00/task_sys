@@ -1,15 +1,18 @@
 services:
-    laravel.test:
+    app:
+        container_name: tasksys_app
         build:
-            context: ./vendor/laravel/sail/runtimes/8.4
+            context: ./docker/8.4
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: sail-8.4/app
+                XDEBUG: '${XDEBUG:-false}'
+                XDEBUG_PORT: '${XDEBUG_PORT:-9000}'
+        image: tasksys_app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
-            - '${APP_PORT:-8000}:8081'
+            - '8001:8000'
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         environment:
             WWWUSER: '${WWWUSER}'
@@ -20,10 +23,13 @@ services:
         volumes:
             - '.:/var/www/html'
         networks:
-            - sail
+            - tasksys
         depends_on:
             - mysql
+        env_file:
+          - .env
     mysql:
+        container_name: tasksys_db
         image: 'mysql/mysql-server:8.0'
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
@@ -36,10 +42,10 @@ services:
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
             MYSQL_EXTRA_OPTIONS: '${MYSQL_EXTRA_OPTIONS}'
         volumes:
-            - 'sail-mysql:/var/lib/mysql'
+            - 'tasksys-mysql:/var/lib/mysql'
             - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
-            - sail
+            - tasksys
         healthcheck:
             test:
                 - CMD
@@ -49,8 +55,8 @@ services:
             retries: 3
             timeout: 5s
 networks:
-    sail:
+    tasksys:
         driver: bridge
 volumes:
-    sail-mysql:
+    tasksys-mysql:
         driver: local
