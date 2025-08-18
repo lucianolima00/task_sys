@@ -1,8 +1,8 @@
 <p align="center">
     <a href="https://github.com/lucianolima00" target="_blank">
         <picture>
-          <source srcset="public/LIMA_Logo_black.png" media="(prefers-color-scheme: dark)">
-          <source srcset="public/LIMA_Logo.png" media="(prefers-color-scheme: light)">
+          <source srcset="public/LIMA_Logo.png" media="(prefers-color-scheme: dark)">
+          <source srcset="public/LIMA_Logo_black.png" media="(prefers-color-scheme: light)">
           <img alt="Lima Logo" src="public/LIMA_Logo.png">
         </picture>
     </a>
