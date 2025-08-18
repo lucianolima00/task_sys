@@ -43,7 +43,9 @@ class TaskController extends Controller
     {
         $validated = $request->validate([
             'name'     => ['required', 'string', 'max:255'],
-            'priority' => ['required', 'integer', 'min:0'],
+            'priority'    => ['required', 'integer', 'min:1', 'unique:tasks,priority'],
+            'description' => ['nullable', 'string'],
+            'project_id' => ['nullable', 'exists:projects,id']
         ]);
 
         $task = Task::create($validated);
@@ -73,7 +75,9 @@ class TaskController extends Controller
     {
         $validated = $request->validate([
             'name'     => ['required', 'string', 'max:255'],
-            'priority' => ['required', 'integer', 'min:0'], // must be number >= 0
+            'priority'    => ['required', 'integer', 'min:1', 'unique:tasks,priority,' . $task->id],
+            'description' => ['nullable', 'string'],
+            'project_id' => ['nullable', 'exists:projects,id']
         ]);
 
         $task->update($validated);
@@ -85,14 +89,13 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      * @param Task $task
-     * @return RedirectResponse
+     * @return JsonResponse
      */
-    public function destroy(Task $task): RedirectResponse
+    public function destroy(Task $task): JsonResponse
     {
         $task->delete();
 
-        return redirect()->route('tasks.index')
-            ->with('success', 'Task deleted successfully.');
+        return response()->json(['success' => true]);
     }
 
     /**
@@ -101,7 +104,7 @@ class TaskController extends Controller
      */
     public function data(Request $request): JsonResponse
     {
-        $query = Task::with('project')->select('name','priority','project_id','created_at');
+        $query = Task::with('project')->select('id', 'name','priority','project_id','created_at');
 
         if ($request->has('project_id') && $request->project_id != '') {
             $query->where('project_id', $request->project_id);
@@ -109,6 +112,7 @@ class TaskController extends Controller
 
         $tasks = $query->get()->map(function ($task) {
             return [
+                'id' => $task->id,
                 'name' => $task->name,
                 'priority' => $task->priority,
                 'project' => $task->project ? $task->project->name : '-',

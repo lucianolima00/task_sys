@@ -7,11 +7,10 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
-    Route::middleware('admin')->group(function () {
-        Route::resource('users', UserController::class, ['except' => ['show', 'update', 'destroy']]);
-        Route::any('/users/{user}/update', [UserController::class, 'update'])->name('users.update');
-        Route::any('/users/{user}/delete', [UserController::class, 'destroy'])->name('users.destroy');
-    });
+    Route::get('/users/data', [UserController::class, 'data'])->name('users.data');
+    Route::resource('users', UserController::class, ['except' => ['show', 'update', 'destroy']]);
+    Route::any('/users/{user}/update', [UserController::class, 'update'])->name('users.update');
+    Route::any('/users/{user}/delete', [UserController::class, 'destroy'])->name('users.destroy');
 
     Route::get('/tasks/data', [TaskController::class, 'data'])->name('tasks.data');
     Route::get('/tasks/projects', [TaskController::class, 'projects'])->name('tasks.projects');
@@ -22,10 +21,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/projects/data', [ProjectController::class, 'data'])->name('projects.data');
     Route::resource('projects', ProjectController::class, ['except' => ['show']]);
 
     Route::get('/', function () {
-        return view('dashboard');
+        return view('tasks.index');
     });
 });
 

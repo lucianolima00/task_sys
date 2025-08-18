@@ -14,6 +14,7 @@
     </div>
     <form method="POST" action="{{ route('projects.update', ['project' => $project]) }}">
         @csrf
+        @method('PUT')
         <div class="row">
             @include('projects._form')
         </div>

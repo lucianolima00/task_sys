@@ -39,6 +39,7 @@ class ProjectController extends Controller
     {
         $validated = $request->validate([
             'name'     => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
         ]);
 
         $project = Project::create($validated);
@@ -67,7 +68,8 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project): RedirectResponse
     {
         $validated = $request->validate([
-            'name'     => ['required', 'string', 'max:255'],
+            'name'        => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
         ]);
 
         $project->update($validated);

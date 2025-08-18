@@ -114,6 +114,13 @@ composer install
 npm install
 ./vendor/bin/sail up
 ```
+
+#### Seeding the database
+To be easier to test the system, you can seed the database with random values running the following command
+```shell
+sail artisan db:seed
+```
+
 ## License
 
 The TaskSys is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

@@ -16,20 +16,20 @@
 
 <!-- Project ID -->
 @php
-    $data = old('project', $task->project) ? [old('project', $task->project) => $task->project->name] : null
+    $data = old('project_id', $task->project_id) ? [old('project_id', $task->project_id) => $task->project->name] : null
 @endphp
-<div class="col-12 col-md-6 col-lg-6 col-xl-6 mt-4">
-    <x-input-label for="project" :value="__('Project')"/>
-    <x-select-input id="project" placeholder="Select a project" class="block mt-1 w-full"
-                    type="text" name="project"
-                    :value="old('project', $task->project)"
+<div class="col-12 mt-4">
+    <x-input-label for="project_id" :value="__('Project')"/>
+    <x-select-input id="project_id" placeholder="Select a project" class="block mt-1 w-full"
+                    type="text" name="project_id"
+                    :value="old('project_id', $task->project_id)"
                     :data="$data"/>
     <x-input-error :messages="$errors->get('project')" class="mt-2"/>
 </div>
 
 <!-- Description -->
 <div class="col-12 col-md-12 col-lg-12 col-xl-12 mt-4">
-    <x-input-label for="description" :value="__('Descrição')"/>
+    <x-input-label type="textarea" for="description" :value="__('Description')"/>
     <x-textarea-input id="description" class="block mt-1 w-full" cols="4" rows="5" name="description"
                       :value="old('description', $task->description)"
                       autocomplete="description"/>
@@ -44,28 +44,31 @@
         {{ __('Save') }}
     </x-primary-button>
 </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#project").select2({
-            language: "en-US",
-            allowClear: true,
-            ajax: {
-                url: "{{route('tasks.projects')}}",
-                type: "get",
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return {
-                        search: params.term,
-                    };
-                },
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            }
+
+@push('scripts')
+    <script type="text/javascript">
+        $(function () {
+            $("#project_id").select2({
+                language: "en-US",
+                allowClear: true,
+                ajax: {
+                    url: "{{route('tasks.projects')}}",
+                    type: "get",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            search: params.term,
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: true
+                }
+            });
         });
-    });
-</script>
+    </script>
+@endpush
