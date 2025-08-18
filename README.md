@@ -124,18 +124,19 @@ npm install
 ```
 
 #### Seeding the database
-To be able to access the system is necessary to have at least one user registered. To register this user, you will need to seed the database.
+To access the system, you must have at least one user registered. You can create this user by seeding the database.
 
-Here you have the option to seed the database complete, to be easier to test the system, to run the complete seed you need to run the following command
+You have the option to run the complete database seed, which makes testing the system easier. To do so, run the following command:
 ```shell
 sail artisan db:seed
 ```
-This command will seed the database with:
+This will populate the database with:
+
 - 1 User
 - 10 Projects
 - 50 Tasks
 
-If you want just the user just run the following command
+If you only want to create the default user without seeding projects or tasks, run:
 ```shell
 sail artisan db:seed --class=UserTableSeeder
 ```
