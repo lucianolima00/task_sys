@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\Task;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -15,8 +16,7 @@ class TaskController extends Controller
      */
     public function index(): View
     {
-        $tasks = Task::all();
-        return view('tasks.index', compact('tasks'));
+        return view('tasks.index');
     }
 
     /**
@@ -41,11 +41,12 @@ class TaskController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'project_id' => 'required',
+        $validated = $request->validate([
+            'name'     => ['required', 'string', 'max:255'],
+            'priority' => ['required', 'integer', 'min:0'],
         ]);
 
-        $task = new Task($request->all());
+        $task = Task::create($validated);
         $task->save();
 
         return redirect()->route('tasks.index')
@@ -57,7 +58,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task): View
     {
-        return view('tasks.update', [
+        return view('tasks.edit', [
             'task' => $task
         ]);
     }
@@ -70,13 +71,12 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task): RedirectResponse
     {
-        $request->validate([
-            'project_id' => 'required',
+        $validated = $request->validate([
+            'name'     => ['required', 'string', 'max:255'],
+            'priority' => ['required', 'integer', 'min:0'], // must be number >= 0
         ]);
 
-        $request->request->remove("_token");
-
-        $task->update($request->all());
+        $task->update($validated);
 
         return redirect()->route('tasks.index')
             ->with('success', 'Task updated successfully.');
@@ -96,10 +96,35 @@ class TaskController extends Controller
     }
 
     /**
-     * @param $search
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function projects(Request $request) {
+    public function data(Request $request): JsonResponse
+    {
+        $query = Task::with('project')->select('name','priority','project_id','created_at');
+
+        if ($request->has('project_id') && $request->project_id != '') {
+            $query->where('project_id', $request->project_id);
+        }
+
+        $tasks = $query->get()->map(function ($task) {
+            return [
+                'name' => $task->name,
+                'priority' => $task->priority,
+                'project' => $task->project ? $task->project->name : '-',
+                'created_at' => $task->created_at->format('Y-m-d H:i:s')
+            ];
+        });
+
+        return response()->json($tasks);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function projects(Request $request): JsonResponse
+    {
         $data = [];
 
         if ($request->search) {
@@ -119,5 +144,19 @@ class TaskController extends Controller
 
         return response()->json($data);
 
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function reorder(Request $request): JsonResponse
+    {
+        foreach ($request->updates as $update) {
+            \App\Models\Task::where('id', $update['id'])
+                ->update(['priority' => $update['priority']]);
+        }
+
+        return response()->json(['success' => true]);
     }
 }

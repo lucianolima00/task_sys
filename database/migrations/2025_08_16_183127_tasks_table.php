@@ -15,13 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('priority');
-            $table->unsignedBigInteger('project_id');
+            $table->string('description')->nullable();
+            $table->tinyInteger('done')->default(0);
+            $table->unsignedBigInteger('project_id')->nullable();
             $table->timestamps();
 
             $table->foreign('project_id')
                 ->references('id')
                 ->on('projects')
-                ->onDelete('cascade');
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
         });
     }
 

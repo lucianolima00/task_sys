@@ -1,61 +1,119 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><a href="https://github.com/lucianolima00" target="_blank"><img src="public/LIMA_Logo.png" width="200" alt="Lima Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## About TaskSys
 
-## About Laravel
+TaskSys is a simple task management application created as part of a job application test to demonstrate practical software development skills. It enables users to efficiently organize, track, and prioritize tasks through a clean and intuitive interface, supporting features such as creating, updating, deleting, and marking tasks as complete. TaskSys is using the following frameworks and requirements:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP v8.4
+- Laravel v12.24.0
+- Sail v1.44
+- NodeJS v22.18.0
+- Jquery v3.7.1
+- TailwindCSS v4.0.0
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+TaskSys is a [Laravel](https://laravel.com) project designed and developed by [Luciano Lima](https://github.com/lucianolima00).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Launching TaskSys
 
-## Learning Laravel
+TaskSys is using Laravel/Sail, that uses docker to launch the project. Both `vendor` and `node_modules` folders will not be available on the .zip and the git repository, so is required to have PHP and NodeJS installed to make the firsts step before launching. 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+For launching you need first to create an environment file on the root folder of the project.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Create a `.env` file on the root folder with the following variables:
+```dotenv
+APP_NAME=TaskSys
+APP_ENV=local
+APP_KEY=base64:abcdefghijklmnopqrstuvwxyz123456789=
+APP_DEBUG=true
+APP_DOMAIN=localhost
+APP_URL="http://${APP_DOMAIN}"
+APP_PORT=8000
+FORWARD_APP_PORT=8001
+APP_SERVICE=app
+SAIL_XDEBUG_MODE=debug
+SAIL_XDEBUG_CONFIG=client_host=host.docker.internal
+WWWGROUP=1000
+WWWUSER=1000
+XDEBUG=true
+XDEBUG_PORT=9001
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+DB_CONNECTION=mysql
+DB_HOST=tasksys_db
+DB_PORT=3306
+DB_DATABASE=tasksys-db
+DB_USERNAME=root
+DB_PASSWORD=123456
 
-## Laravel Sponsors
+PUSHER_APP_ID=
+PUSHER_APP_KEY=
+PUSHER_APP_SECRET=
+PUSHER_HOST=
+PUSHER_PORT=443
+PUSHER_SCHEME=https
+PUSHER_APP_CLUSTER=mt1
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+GITHUB_REDIRECT=
 
-### Premium Partners
+VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+VITE_PUSHER_HOST="${PUSHER_HOST}"
+VITE_PUSHER_PORT="${PUSHER_PORT}"
+VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
+VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Commands
 
-## Contributing
+With the `.env` file created, execute the following commands to install the PHP/Composer and NodeJS required to launch Sail. If you already have both installed in your machine, jump to [launching](#launching)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### PHP
+Linux Debian Systems (OS used to create the project).
+```shell
+sudo apt update
+sudo apt install -y php8.4
+```
+MacOS Systems
+```shell
+curl -o- https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
 
-## Code of Conduct
+brew install php@8.4
+brew link --force --overwrite php@8.4
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### Composer
+```shell
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'.PHP_EOL; } else { echo 'Installer corrupt'.PHP_EOL; unlink('composer-setup.php'); exit(1); }"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+```
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
+#### NodeJS
+Linux Debian Systems (OS used to create the project).
+```shell
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+\. "$HOME/.nvm/nvm.sh"
+nvm install 22
+node -v
+nvm current
+npm -v
+```
+MacOS Systems
+```shell
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+\. "$HOME/.nvm/nvm.sh"
+nvm install 22
+node -v
+nvm current
+npm -v
+```
+#### Launching
+```shell
+composer install
+npm install
+./vendor/bin/sail up
+```
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The TaskSys is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

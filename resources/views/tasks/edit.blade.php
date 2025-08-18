@@ -12,8 +12,9 @@
             </div>
         </div>
     </div>
-    <form method="POST" action="{{ route('tasks.update', ['task' => $task]) }}">
+    <form method="POST" action="{{ route('tasks.update', $task->id) }}">
         @csrf
+        @method('PUT')
         <div class="row">
             @include('tasks._form')
         </div>

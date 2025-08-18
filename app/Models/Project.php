@@ -12,9 +12,4 @@ class Project extends Model
         'name',
         'description',
     ];
-
-    public function tasks()
-    {
-        return $this->belongsToMany(Task::class);
-    }
 }

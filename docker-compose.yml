@@ -12,7 +12,7 @@ services:
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
-            - '8001:8000'
+            - '${FORWARD_APP_POST:-8001}:${APP_POST:-8000}'
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         environment:
             WWWUSER: '${WWWUSER}'

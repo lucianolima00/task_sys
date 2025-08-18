@@ -1,9 +1,17 @@
-<!-- ID -->
+<!-- Name -->
 <div class="col-12 col-md-6 col-lg-6 col-xl-6 mt-4">
-    <x-input-label for="id" :value="__('ID')"/>
-    <x-text-input id="id" disabled="true" class="block mt-1 w-full" type="text" name="id"
-                  :value="Formatter::asID(old('id', $task->id))" autocomplete="id"/>
-    <x-input-error :messages="$errors->get('id')" class="mt-2"/>
+    <x-input-label for="name" :value="__('Name')"/>
+    <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
+                  :value="old('name', $task->name)" autocomplete="name"/>
+    <x-input-error :messages="$errors->get('name')" class="mt-2"/>
+</div>
+
+<!-- Priority -->
+<div class="col-12 col-md-6 col-lg-6 col-xl-6 mt-4">
+    <x-input-label for="priority" :value="__('Priority')"/>
+    <x-text-input id="priority" class="block mt-1 w-full" type="number" name="priority"
+                  :value="old('priority', $task->priority)" autocomplete="priority"/>
+    <x-input-error :messages="$errors->get('priority')" class="mt-2"/>
 </div>
 
 <!-- Project ID -->
@@ -29,29 +37,25 @@
 </div>
 
 <div class="flex items-center justify-end mt-4">
-    <x-secondary-button class="ml-4" href="{{route('tasks.index')}}">
+    <x-secondary-button class="ms-4" href="{{route('tasks.index')}}">
         {{ __('Back') }}
     </x-secondary-button>
-    <x-primary-button class="ml-4">
+    <x-primary-button class="ms-4">
         {{ __('Save') }}
     </x-primary-button>
 </div>
-<!-- Script -->
 <script type="text/javascript">
-    // CSRF Token
-    const CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
     $(document).ready(function () {
         $("#project").select2({
             language: "en-US",
             allowClear: true,
             ajax: {
                 url: "{{route('tasks.projects')}}",
-                type: "post",
+                type: "get",
                 dataType: 'json',
                 delay: 250,
                 data: function (params) {
                     return {
-                        _token: CSRF_TOKEN,
                         search: params.term,
                     };
                 },

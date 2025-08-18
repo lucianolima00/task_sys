@@ -10,12 +10,13 @@ class Task extends Model
 
     protected $fillable = [
         'name',
+        'priority',
         'description',
         'project_id'
     ];
 
     public function project()
     {
-        return $this->hasOne(Project::class);
+        return $this->belongsTo(Project::class);
     }
 }

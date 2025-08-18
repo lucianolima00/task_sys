@@ -13,9 +13,10 @@ Route::middleware('auth')->group(function () {
         Route::any('/users/{user}/delete', [UserController::class, 'destroy'])->name('users.destroy');
     });
 
-    Route::resource('tasks', TaskController::class);
-    Route::post('/tasks/collaborators', [TaskController::class, 'collaborators'])->name('tasks.collaborators');
-    Route::post('/tasks/projects', [TaskController::class, 'projects'])->name('tasks.projects');
+    Route::get('/tasks/data', [TaskController::class, 'data'])->name('tasks.data');
+    Route::get('/tasks/projects', [TaskController::class, 'projects'])->name('tasks.projects');
+    Route::post('/tasks/reorder', [TaskController::class, 'reorder'])->name('tasks.reorder');
+    Route::resource('tasks', TaskController::class, ['except' => ['show']]);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
