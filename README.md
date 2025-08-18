@@ -1,4 +1,12 @@
-<p align="center"><a href="https://github.com/lucianolima00" target="_blank"><img src="public/LIMA_Logo.png" width="200" alt="Lima Logo"></a></p>
+<p align="center">
+    <a href="https://github.com/lucianolima00" target="_blank">
+        <picture>
+          <source srcset="public/LIMA_Logo_black.png" media="(prefers-color-scheme: dark)">
+          <source srcset="public/LIMA_Logo.png" media="(prefers-color-scheme: light)">
+          <img alt="Lima Logo" src="public/LIMA_Logo.png">
+        </picture>
+    </a>
+</p>
 
 ## About TaskSys
 
@@ -116,11 +124,25 @@ npm install
 ```
 
 #### Seeding the database
-To be easier to test the system, you can seed the database with random values running the following command
+To be able to access the system is necessary to have at least one user registered. To register this user, you will need to seed the database.
+
+Here you have the option to seed the database complete, to be easier to test the system, to run the complete seed you need to run the following command
 ```shell
 sail artisan db:seed
 ```
+This command will seed the database with:
+- 1 User
+- 10 Projects
+- 50 Tasks
 
-## License
+If you want just the user just run the following command
+```shell
+sail artisan db:seed --class=UserTableSeeder
+```
 
-The TaskSys is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### Login
+After seeding the database you can access the system with this credentials
+```
+login: admin@tasksys.com
+password: 123456
+```
