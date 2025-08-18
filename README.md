@@ -23,7 +23,7 @@ TaskSys is a [Laravel](https://laravel.com) project designed and developed by [L
 
 ## Launching TaskSys
 
-TaskSys is using Laravel/Sail, that uses docker to launch the project. Both `vendor` and `node_modules` folders will not be available on the .zip and the git repository, so is required to have PHP and NodeJS installed to make the firsts step before launching. 
+TaskSys is using Laravel/Sail, that uses docker to launch the project. Both `vendor` and `node_modules` folders will not be available on the git repository, so is required to have PHP and NodeJS installed to make the firsts step before launching. 
 
 For launching you need first to create an environment file on the root folder of the project.
 
